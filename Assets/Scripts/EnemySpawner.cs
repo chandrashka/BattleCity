@@ -7,8 +7,10 @@ public class EnemySpawner : MonoBehaviour
     private const int MaxX = 6;
     private const float Y = 4.4f;
     public static int EnemyCount = 12;
+
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float timeToNextEnemy;
+    
     private float _currentTimeTiNextEnemy;
 
     private Random _random;
