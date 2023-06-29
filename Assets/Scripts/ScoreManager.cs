@@ -1,9 +1,11 @@
-public static class ScoreManager
-{
-    public static int TotalScore;
+using UnityEngine;
 
-    public static void UpdateScore()
+public class ScoreManager : MonoBehaviour
+{
+    public int totalScore;
+
+    public void UpdateScore()
     {
-        TotalScore += 100;
+        totalScore += 100;
     }
 }

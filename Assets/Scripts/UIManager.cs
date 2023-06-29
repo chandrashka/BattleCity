@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject leftTab;
 
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private EnemySpawner scoreManager;
 
     [SerializeField] private GameObject[] healthHearts;
     [SerializeField] private List<GameObject> enemies;
@@ -28,11 +27,10 @@ public class UIManager : MonoBehaviour
         endGameCanvas.SetActive(false);
     }
 
-    public void EndGameUI()
+    public void EndGameUI(int score)
     {
         leftTab.SetActive(false);
         endGameCanvas.SetActive(true);
-        var score = 0;
         var text = $"Your score : {score}";
         scoreText.text = text;
     }
