@@ -7,7 +7,7 @@ public abstract class TankMovement : MonoBehaviour
     protected void MoveHorizontal(float movementHorizontal)
     {
         Quaternion rotation;
-        
+
         if (movementHorizontal < 0)
         {
             rotation = Quaternion.Euler(0, 180, 0);
@@ -18,13 +18,14 @@ public abstract class TankMovement : MonoBehaviour
             rotation = Quaternion.Euler(0, 0, 0);
             transform.position += Vector3.right * (Speed * Time.deltaTime);
         }
+
         transform.rotation = rotation;
     }
-    
+
     protected void MoveVertical(float movementVertical)
     {
         Quaternion rotation;
-        
+
         if (movementVertical < 0)
         {
             rotation = Quaternion.Euler(0, 0, 270);
@@ -35,6 +36,7 @@ public abstract class TankMovement : MonoBehaviour
             rotation = Quaternion.Euler(0, 0, 90);
             transform.position += Vector3.up * (Speed * Time.deltaTime);
         }
+
         transform.rotation = rotation;
     }
 }

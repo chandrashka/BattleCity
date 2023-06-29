@@ -2,16 +2,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private MazeSpawner mazeSpawner;
     private static UIManager _uiManager;
-    [SerializeField] private GameObject playerPrefab;
-    
-    private GameObject _player;
-    private HealthManager _healthManager;
     public static bool IsGameOn;
+    [SerializeField] private MazeSpawner mazeSpawner;
+    [SerializeField] private GameObject playerPrefab;
+    private HealthManager _healthManager;
     private bool _isGameStart = true;
-    
-    
+
+    private GameObject _player;
 
     private void Awake()
     {
@@ -27,10 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsGameOn && !_isGameStart || EnemySpawner.EnemyCount <= 0)
-        {
-            EndGame();
-        }
+        if ((!IsGameOn && !_isGameStart) || EnemySpawner.EnemyCount <= 0) EndGame();
         _uiManager.UpdateEnemies(EnemySpawner.EnemyCount);
     }
 
@@ -38,13 +33,13 @@ public class GameManager : MonoBehaviour
     {
         IsGameOn = true;
         _isGameStart = false;
-        
+
         _uiManager.StartGameUI();
         mazeSpawner.SpawnMaze();
-        
+
         var spawnPlace = mazeSpawner.spawnPlace;
         SpawnPlayer(spawnPlace);
-        
+
         _healthManager = _player.GetComponent<HealthManager>();
         UpdateHealth(_healthManager.health);
         _uiManager.UpdateEnemies(EnemySpawner.EnemyCount);
@@ -53,10 +48,10 @@ public class GameManager : MonoBehaviour
     public void RestartTheGame()
     {
         IsGameOn = true;
-        
+
         mazeSpawner.DeleteMaze();
         Destroy(_player);
-        
+
         StartTheGame();
     }
 
@@ -65,7 +60,7 @@ public class GameManager : MonoBehaviour
         var position = spawnPlace.transform.position;
 
         _player = Instantiate(playerPrefab, position, Quaternion.identity);
-        _player.transform.Rotate(new Vector3(0,0,90));
+        _player.transform.Rotate(new Vector3(0, 0, 90));
     }
 
     private void EndGame()
@@ -77,6 +72,4 @@ public class GameManager : MonoBehaviour
     {
         _uiManager.UpdateHealth(health);
     }
-    
-    
 }

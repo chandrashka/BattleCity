@@ -3,16 +3,15 @@ using Random = System.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private float timeToNextEnemy;
-    public static int EnemyCount = 12;
-
     private const int MinX = -4;
     private const int MaxX = 6;
     private const float Y = 4.4f;
+    public static int EnemyCount = 12;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private float timeToNextEnemy;
+    private float _currentTimeTiNextEnemy;
 
     private Random _random;
-    private float _currentTimeTiNextEnemy;
 
     private void Start()
     {

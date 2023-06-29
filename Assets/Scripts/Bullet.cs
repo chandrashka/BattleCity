@@ -23,12 +23,9 @@ public class Bullet : MonoBehaviour
         else if (other.gameObject.TryGetComponent(out HealthManager healthManagerComponent))
         {
             healthManagerComponent.UpdateHealth(-1);
-            if (other.gameObject.TryGetComponent(out EnemyAI _))
-            {
-                ScoreManager.UpdateScore();
-            }
+            if (other.gameObject.TryGetComponent(out EnemyAI _)) ScoreManager.UpdateScore();
         }
-        Destroy(gameObject);
 
+        Destroy(gameObject);
     }
 }

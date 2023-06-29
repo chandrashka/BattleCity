@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerLogic : TankMovement
@@ -10,7 +9,7 @@ public class PlayerLogic : TankMovement
         _weaponLogic = GetComponent<WeaponLogic>();
     }
 
-    void Update()
+    private void Update()
     {
         Move();
     }

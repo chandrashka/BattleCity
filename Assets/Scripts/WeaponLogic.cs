@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class WeaponLogic : MonoBehaviour
 {
+    private const float FireTimeDelay = 1f;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject firePlace;
     private float _currentFireTimeDelay;
-    private const float FireTimeDelay = 1f;
+
+    private void Update()
+    {
+        if (_currentFireTimeDelay > 0) _currentFireTimeDelay -= Time.deltaTime;
+    }
 
     public void Fire()
     {
@@ -13,13 +18,9 @@ public class WeaponLogic : MonoBehaviour
         {
             var position = firePlace.transform.position;
             var rotation = firePlace.transform.rotation;
-            
+
             Instantiate(bulletPrefab, position, rotation);
             _currentFireTimeDelay = FireTimeDelay;
         }
-    }
-    private void Update()
-    {
-        if (_currentFireTimeDelay > 0) _currentFireTimeDelay -= Time.deltaTime;
     }
 }

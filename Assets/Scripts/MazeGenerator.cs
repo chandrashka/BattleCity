@@ -8,18 +8,14 @@ public class MazeGenerator
 
     public MazeCellGenerator[,] GenerateMaze()
     {
-        var maze = new MazeCellGenerator[Width,Height];
+        var maze = new MazeCellGenerator[Width, Height];
 
         for (var i = 0; i < maze.GetLength(0); i++)
-        {
-            for (var j = 0; j < maze.GetLength(1); j++)
-            {
-                maze[i, j] = new MazeCellGenerator();
-            }
-        }
-        
+        for (var j = 0; j < maze.GetLength(1); j++)
+            maze[i, j] = new MazeCellGenerator();
+
         RemoveWalls(maze);
-        
+
         return maze;
     }
 

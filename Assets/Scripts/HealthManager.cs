@@ -5,7 +5,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     public int health;
     public bool isEnemy;
-    
+
     public void UpdateHealth(int update)
     {
         health += update;

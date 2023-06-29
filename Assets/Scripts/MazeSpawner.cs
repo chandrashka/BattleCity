@@ -1,81 +1,71 @@
 using Unity.VisualScripting;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
+using Random = System.Random;
 
 public class MazeSpawner : MonoBehaviour
 {
+    private const int WallsAroundToDelete = 4;
     [SerializeField] private GameObject cell;
     [SerializeField] private GameObject nonDestroyableCell;
-    
+
     [SerializeField] private GameObject playerBasePrefab;
     [SerializeField] private GameObject spawnPlacePrefab;
-    
+
     public GameObject spawnPlace;
     public GameObject playerBase;
-    private const int WallsAroundToDelete = 4;
     private Cell[,] _walls;
 
     public void SpawnMaze()
     {
         const int startPointX = -10;
         const int startPointY = -5;
-        
+
         var generator = new MazeGenerator();
         var maze = generator.GenerateMaze();
-        
-        _walls = new Cell[maze.GetLength(0),maze.GetLength(1)];
+
+        _walls = new Cell[maze.GetLength(0), maze.GetLength(1)];
         var baseIndexI = 0;
         var baseIndexJ = 0;
 
         for (var i = 0; i < maze.GetLength(0); i++)
-        {
-            for (var j = 0; j < maze.GetLength(1); j++)
+        for (var j = 0; j < maze.GetLength(1); j++)
+            if (i == maze.GetLength(0) / 2 && j == 1)
             {
-                if (i == maze.GetLength(0)/2 && j == 1)
-                {
-                    playerBase = Instantiate(playerBasePrefab, new Vector3(i + startPointX, j + startPointY),
-                        Quaternion.identity);
+                playerBase = Instantiate(playerBasePrefab, new Vector3(i + startPointX, j + startPointY),
+                    Quaternion.identity);
 
-                    baseIndexI = i;
-                    baseIndexJ = j;
+                baseIndexI = i;
+                baseIndexJ = j;
 
-                    spawnPlace = Instantiate(spawnPlacePrefab,new Vector3( i - 1 + startPointX, j + startPointY),
-                        Quaternion.identity);
-                }
-                else
-                {
-                    var random = new System.Random();
-                    Cell c;
-                    if (random.Next(0,25) == 0) {
-                        c = Instantiate(nonDestroyableCell, new Vector2(i + startPointX,j + startPointY),
-                        Quaternion.identity).GetComponent<Cell>();
-                        
-                    }
-                    else
-                    {
-                        c = Instantiate(cell, new Vector2(i + startPointX,j + startPointY),
-                            Quaternion.identity).GetComponent<Cell>();
-                    }
-
-                    _walls[i,j] = c;
-
-                    HideWalls(c, maze[i,j].WallLeft, maze[i,j].WallBottom);
-                }
+                spawnPlace = Instantiate(spawnPlacePrefab, new Vector3(i - 1 + startPointX, j + startPointY),
+                    Quaternion.identity);
             }
-        }
-        DeleteWallsAroundBase(baseIndexI,baseIndexJ,maze,_walls);
+            else
+            {
+                var random = new Random();
+                Cell c;
+                if (random.Next(0, 25) == 0)
+                    c = Instantiate(nonDestroyableCell, new Vector2(i + startPointX, j + startPointY),
+                        Quaternion.identity).GetComponent<Cell>();
+                else
+                    c = Instantiate(cell, new Vector2(i + startPointX, j + startPointY),
+                        Quaternion.identity).GetComponent<Cell>();
+
+                _walls[i, j] = c;
+
+                HideWalls(c, maze[i, j].WallLeft, maze[i, j].WallBottom);
+            }
+
+        DeleteWallsAroundBase(baseIndexI, baseIndexJ, maze, _walls);
         DeleteExtraWalls(maze, _walls);
     }
 
     private void DeleteExtraWalls(MazeCellGenerator[,] maze, Cell[,] walls)
     {
-        for (int i = 0; i < maze.GetLength(0); i++)
+        for (var i = 0; i < maze.GetLength(0); i++)
         {
             var c = walls[i, maze.GetLength(1) - 1];
-                if (c != null)
-                {
-                    Destroy(c.GameObject());
-                }
+            if (c != null) Destroy(c.GameObject());
         }
     }
 
@@ -84,19 +74,12 @@ public class MazeSpawner : MonoBehaviour
         var width = maze.GetLength(0);
         var height = maze.GetLength(1);
         for (var i = x - WallsAroundToDelete; i < x + WallsAroundToDelete; i++)
-        {
-            for (var j = y - WallsAroundToDelete; j < y + WallsAroundToDelete; j++)
+        for (var j = y - WallsAroundToDelete; j < y + WallsAroundToDelete; j++)
+            if (i >= 0 && i < width && j >= 0 && j < height)
             {
-                if (i >= 0 && i < width && j >= 0 && j < height)
-                {
-                    var c = walls[i, j];
-                    if (c != null)
-                    {
-                        Destroy(c.GameObject());
-                    }
-                }
+                var c = walls[i, j];
+                if (c != null) Destroy(c.GameObject());
             }
-        }
     }
 
     private static void HideWalls(Cell c, bool hideWallLeft, bool hideWallBottom)
@@ -108,9 +91,8 @@ public class MazeSpawner : MonoBehaviour
     public void DeleteMaze()
     {
         foreach (var c in _walls)
-        {
-            if(c != null) Destroy(c.GameObject());
-        }
+            if (c != null)
+                Destroy(c.GameObject());
         Destroy(playerBase);
         Destroy(spawnPlace);
     }
