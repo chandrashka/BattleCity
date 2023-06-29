@@ -2,31 +2,27 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static UIManager _uiManager;
-    public static bool IsGameOn;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private MazeSpawner mazeSpawner;
+    [SerializeField] private EnemyManager enemyManager;
     [SerializeField] private GameObject playerPrefab;
     private HealthManager _healthManager;
     private bool _isGameStart = true;
+    public static bool IsGameOn;
 
     private GameObject _player;
 
-    private void Awake()
-    {
-        _uiManager = FindObjectOfType<UIManager>();
-    }
-
     private void Start()
     {
-        EnemySpawner.EnemyCount = 12;
-        _uiManager.StartMenuUI();
+        uiManager.StartMenuUI();
         Screen.SetResolution(800, 600, false);
     }
 
     private void Update()
     {
-        if ((!IsGameOn && !_isGameStart) || EnemySpawner.EnemyCount <= 0) EndGame();
-        _uiManager.UpdateEnemies(EnemySpawner.EnemyCount);
+        if ((!IsGameOn && !_isGameStart) || enemyManager.AllEnemiesKilled()) EndGame();
+        uiManager.UpdateEnemies(0);
     }
 
     public void StartTheGame()
@@ -34,7 +30,7 @@ public class GameManager : MonoBehaviour
         IsGameOn = true;
         _isGameStart = false;
 
-        _uiManager.StartGameUI();
+        uiManager.StartGameUI();
         mazeSpawner.SpawnMaze();
 
         var spawnPlace = mazeSpawner.spawnPlace;
@@ -42,7 +38,7 @@ public class GameManager : MonoBehaviour
 
         _healthManager = _player.GetComponent<HealthManager>();
         UpdateHealth(_healthManager.health);
-        _uiManager.UpdateEnemies(EnemySpawner.EnemyCount);
+        uiManager.UpdateEnemies(0);
     }
 
     public void RestartTheGame()
@@ -65,11 +61,11 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-        _uiManager.EndGameUI();
+        uiManager.EndGameUI(scoreManager.totalScore);
     }
 
     public void UpdateHealth(int health)
     {
-        _uiManager.UpdateHealth(health);
+        uiManager.UpdateHealth(health);
     }
 }
