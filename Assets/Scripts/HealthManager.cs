@@ -1,10 +1,16 @@
+using System;
 using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
+    private GameManager _gameManager;
     public int health;
     public bool isEnemy;
+
+    private void Awake()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+    }
 
     public void UpdateHealth(int update)
     {
@@ -16,12 +22,12 @@ public class HealthManager : MonoBehaviour
                 Destroy(gameObject);
                 break;
             case <= 0 when !isEnemy:
-                gameManager.UpdateHealth(health);
-                GameManager.IsGameOn = false;
+                _gameManager.UpdateHealth(health);
+                _gameManager.EndGame();
                 break;
             case > 0 when !isEnemy:
                 //gameManager.ReSpawnPlayer();
-                gameManager.UpdateHealth(health);
+                _gameManager.UpdateHealth(health);
                 break;
         }
     }

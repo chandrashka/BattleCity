@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         _player.transform.Rotate(new Vector3(0, 0, 90));
     }
 
-    private void EndGame()
+    public void EndGame()
     {
         uiManager.EndGameUI(scoreManager.totalScore);
     }

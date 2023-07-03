@@ -19,6 +19,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        Destroy(gameObject);
         if (other.gameObject.TryGetComponent(out WallLogic _))
         {
             Destroy(other.gameObject);
@@ -37,7 +38,5 @@ public class Bullet : MonoBehaviour
                 _enemyManager.UpdateEnemies();
             }
         }
-
-        Destroy(gameObject);
     }
 }
